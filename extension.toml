@@ -1,0 +1,120 @@
+# Prettier, the opinionated code formatter: formats JavaScript, TypeScript,
+# CSS, HTML, JSON, Markdown, YAML, and more with the project's own Prettier
+# (or a global install), which a Node.js server the extension keeps running
+# loads once. Format Document, Format Selection, and format on save use it
+# where it's the chosen formatter (Format Document With...), or where no
+# language server formats. See Flareite's docs/extensions.md.
+id = "flareite.prettier"
+name = "Prettier"
+version = "1.0.0"
+description = "Formats JavaScript, TypeScript, CSS, HTML, JSON, Markdown, YAML, and more with your project's Prettier."
+author = "Flareite"
+icon = "icon.svg"
+api_version = "2"
+entrypoint = "target/wasm32-unknown-unknown/release/prettier.wasm"
+# Started with the editor, to show or hide its status bar item for the file
+# in use; Node.js starts only once a file Prettier formats is.
+activation = ["on-startup"]
+events = ["folder-changed", "active-file-changed", "configuration-changed"]
+
+[engines]
+flareite = ">=0.1.0"
+
+# documents_read: the documents it formats, and their problems.
+# files_read: the files Format All Files and Check Formatting go through,
+# and watching the folder for Prettier's configs changing.
+# files_write: the files Format All Files formats.
+# processes: Node.js, which runs Prettier.
+[permissions]
+documents_read = true
+files_read = true
+files_write = true
+processes = true
+
+[build]
+command = "cargo"
+args = ["build", "--release"]
+watch = ["src", "Cargo.toml"]
+
+# Elsewhere than the PATH, set where it is:
+# [extensions.programs] "flareite.prettier.node" = "C:/Program Files/nodejs/node.exe".
+[[programs]]
+name = "node"
+
+# The languages Prettier formats, by the ids Flareite's language
+# extensions (and VS Code) give them.
+[[formatting_providers]]
+languages = [
+  "javascript",
+  "javascriptreact",
+  "typescript",
+  "typescriptreact",
+  "json",
+  "jsonc",
+  "json5",
+  "css",
+  "scss",
+  "less",
+  "html",
+  "vue",
+  "markdown",
+  "mdx",
+  "yaml",
+  "graphql",
+  "handlebars",
+]
+
+[[status_items]]
+id = "status"
+alignment = "right"
+priority = 5
+text = "Prettier"
+tooltip = "Prettier: click for its log"
+command = "flareite.prettier.showLog"
+
+[[commands]]
+id = "flareite.prettier.formatAll"
+title = "Prettier: Format All Files"
+
+[[commands]]
+id = "flareite.prettier.check"
+title = "Prettier: Check Formatting"
+
+[[commands]]
+id = "flareite.prettier.clearProblems"
+title = "Prettier: Clear Problems"
+
+[[commands]]
+id = "flareite.prettier.restart"
+title = "Prettier: Restart"
+
+[[commands]]
+id = "flareite.prettier.showLog"
+title = "Prettier: Show Log"
+
+[[menus]]
+location = "explorer/context"
+command = "flareite.prettier.formatAll"
+group = "prettier"
+targets = ["folders"]
+
+[[menus]]
+location = "explorer/context"
+command = "flareite.prettier.check"
+group = "prettier"
+targets = ["folders"]
+
+[configuration.require_config]
+type = "boolean"
+default = false
+description = "Format only files that have a Prettier config (a .prettierrc, prettier.config.js, or \"prettier\" in package.json), leaving projects that don't use Prettier alone."
+
+[configuration.ignore_path]
+type = "string"
+default = ".prettierignore"
+description = "The file listing what Prettier leaves alone, relative to the open folder, as Prettier's --ignore-path."
+
+[configuration.use_editorconfig]
+type = "boolean"
+default = true
+description = "Whether .editorconfig files set Prettier's options (indentation, line length, line endings) where its config doesn't."

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#1a2b34"/>
+  <!-- Lines of code, laid out evenly: what formatting makes of them. -->
+  <g stroke-linecap="round" stroke-width="5">
+    <path d="M14 16h20" stroke="#56b3b4"/>
+    <path d="M40 16h10" stroke="#ea5e5e"/>
+    <path d="M14 26h8" stroke="#f7ba3e"/>
+    <path d="M28 26h22" stroke="#bf85bf"/>
+    <path d="M22 36h16" stroke="#56b3b4"/>
+    <path d="M44 36h6" stroke="#f7ba3e"/>
+    <path d="M22 46h6" stroke="#ea5e5e"/>
+    <path d="M34 46h16" stroke="#56b3b4"/>
+  </g>
+</svg>
